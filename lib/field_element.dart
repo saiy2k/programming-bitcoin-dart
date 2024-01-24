@@ -1,5 +1,8 @@
 import 'dart:core';
 
+/**
+ * Try making this work with a Generic Type T, where T can be int or BigInt
+ */
 class FieldElement {
   late BigInt num;
   BigInt prime;

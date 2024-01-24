@@ -86,5 +86,20 @@ void main() {
       FieldElement fem77 = FieldElement.fromNegative(im77, prime);
       expect(p1 + p2, equals(Point(fe18, fem77, fe5, fe7)));
     });
+
+    test('Test for secp256k1', () {
+      BigInt p = BigInt.two.pow(256) - BigInt.two.pow(32) - BigInt.from(977);
+      BigInt n = BigInt.parse('fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141', radix: 16);
+      BigInt gx = BigInt.parse('79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798', radix: 16);
+      BigInt gy = BigInt.parse('483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8', radix: 16);
+      FieldElement x = FieldElement(gx, p);
+      FieldElement y = FieldElement(gy, p);
+      FieldElement a = FieldElement(BigInt.zero, p);
+      FieldElement b = FieldElement(i7, p);
+
+      Point G = Point(x, y, a, b);
+
+      print(G);
+    });
   });
 }

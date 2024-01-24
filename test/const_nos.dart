@@ -1,3 +1,6 @@
+BigInt gx = BigInt.parse('79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798', radix: 16);
+BigInt gy = BigInt.parse('483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8', radix: 16);
+
 BigInt im77 = BigInt.from(-77);
 
 BigInt im7 = BigInt.from(-7);
@@ -5,6 +8,7 @@ BigInt im4 = BigInt.from(-4);
 BigInt im3 = BigInt.from(-3);
 BigInt im1 = BigInt.from(-1);
 
+BigInt i0 = BigInt.zero;
 BigInt i1 = BigInt.from(1);
 BigInt i2 = BigInt.from(2);
 BigInt i3 = BigInt.from(3);
@@ -43,6 +47,7 @@ BigInt i49 = BigInt.from(49);
 
 BigInt i51 = BigInt.from(51);
 BigInt i52 = BigInt.from(52);
+BigInt i56 = BigInt.from(56);
 BigInt i57 = BigInt.from(57);
 
 BigInt i63 = BigInt.from(63);
@@ -51,3 +56,12 @@ BigInt i77 = BigInt.from(77);
 
 BigInt i95 = BigInt.from(95);
 BigInt i97 = BigInt.from(97);
+BigInt i99 = BigInt.from(99);
+
+BigInt i105 = BigInt.from(105);
+BigInt i119 = BigInt.from(119);
+BigInt i192 = BigInt.from(192);
+BigInt i193 = BigInt.from(193);
+
+BigInt i200 = BigInt.from(200);
+BigInt i223 = BigInt.from(223);
