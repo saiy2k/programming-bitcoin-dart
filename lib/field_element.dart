@@ -1,9 +1,11 @@
 import 'dart:core';
 
+import 'package:dart_bitcoin/operable.dart';
+
 /**
  * Try making this work with a Generic Type T, where T can be int or BigInt
  */
-class FieldElement {
+class FieldElement implements IOperable {
   late BigInt num;
   BigInt prime;
 
@@ -26,6 +28,7 @@ class FieldElement {
       identical(this, other) ||
       other is FieldElement && runtimeType == other.runtimeType && num == other.num && prime == other.prime;
 
+  @override
   FieldElement operator +(FieldElement other) {
     if (prime != other.prime) {
       throw ArgumentError('Cannot add two numbers in different Fields');
@@ -34,6 +37,7 @@ class FieldElement {
     return FieldElement(sum, prime);
   }
 
+  @override
   FieldElement operator -(FieldElement other) {
     if (prime != other.prime) {
       throw ArgumentError('Cannot subtract two numbers in different Fields');
@@ -42,6 +46,7 @@ class FieldElement {
     return FieldElement(difference, prime);
   }
 
+  @override
   FieldElement operator *(FieldElement other) {
     if (prime != other.prime) {
       throw ArgumentError('Cannot multiply two numbers in different Fields');
@@ -50,6 +55,7 @@ class FieldElement {
     return FieldElement(mul, prime);
   }
 
+  @override
   FieldElement operator /(FieldElement other) {
     if (prime != other.prime) {
       throw ArgumentError('Cannot divide two numbers in different Fields');
@@ -58,9 +64,16 @@ class FieldElement {
     return FieldElement(div, prime);
   }
 
-  FieldElement pow_(BigInt exp) {
+  @override
+  FieldElement pow(BigInt exp) {
     BigInt e = exp % (prime - BigInt.one); // to handle negative numbers and larger than 'prime' exponents
     BigInt res = num.modPow(e, prime);
+    return FieldElement(res, prime);
+  }
+
+  @override
+  FieldElement smul(BigInt exp) {
+    BigInt res = num * exp % prime;
     return FieldElement(res, prime);
   }
 

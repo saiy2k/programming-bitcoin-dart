@@ -1,8 +1,9 @@
 import 'dart:math';
 
 import 'package:dart_bitcoin/field_element.dart';
+import 'package:dart_bitcoin/operable.dart';
 
-class Point<T> {
+class Point<T extends IOperable> {
   FieldElement? x, y;
   FieldElement a, b;
 
@@ -17,6 +18,10 @@ class Point<T> {
     if (!onCurve(x!, y!)) {
       throw ArgumentError('($x, $y) is not on the curve');
     }
+  }
+
+  static Point inifinity<T extends IOperable>(FieldElement a, FieldElement b) {
+    return Point(null, null, a, b);
   }
 
   Point operator +(Point other) {
@@ -64,14 +69,31 @@ class Point<T> {
   }
 
   Point smult(BigInt coeff) {
-    Point prod = Point(null, null, this.a, this.b);
+    Point current = this;
+    Point result = Point(null, null, this.a, this.b);
 
-    for (var i = BigInt.zero; i < coeff; i = i + BigInt.one) {
-      prod = prod + this;
+    while (coeff > BigInt.zero) {
+      if (coeff & BigInt.one == BigInt.one) {
+        result = result + current;
+      }
+
+      current = current + current;
+      coeff = coeff >> 1;
     }
 
-    return prod;
+    return result;
   }
+
+  // Lame implemnetation
+  // Point smult(BigInt coeff) {
+  //   Point prod = Point(null, null, this.a, this.b);
+
+  //   for (var i = BigInt.zero; i < coeff; i = i + BigInt.one) {
+  //     prod = prod + this;
+  //   }
+
+  //   return prod;
+  // }
 
   @override
   bool operator ==(Object other) =>
@@ -84,7 +106,7 @@ class Point<T> {
           b == other.b;
 
   bool onCurve(FieldElement x, FieldElement y) {
-    return y.pow_(BigInt.two) == x.pow_(BigInt.from(3)) + a * x + b;
+    return y.pow(BigInt.two) == x.pow(BigInt.from(3)) + a * x + b;
   }
 
   @override

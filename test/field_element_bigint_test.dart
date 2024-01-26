@@ -11,6 +11,16 @@ void main() {
       expect(a.prime, equals(i13));
     });
 
+/*
+    test('rough', () {
+      FieldElement a = FieldElement(i0, i13);
+      for (int i = 0; i < 20; i++) {
+        print(a);
+        a = a + FieldElement(i1, i13);
+      }
+    });
+    */
+
     test('Basic: Negative Initialization', () {
       FieldElement a = FieldElement.fromNegative(im4, i13);
       expect(a.num, equals(i9));
@@ -107,7 +117,7 @@ void main() {
       FieldElement fe77 = FieldElement(i77, i97);
       FieldElement fe63 = FieldElement(i63, i97);
 
-      expect(fe12.pow_(i7) * fe77.pow_(i49), equals(fe63));
+      expect(fe12.pow(i7) * fe77.pow(i49), equals(fe63));
     });
 
     test('Div: Case 1', () {
@@ -122,7 +132,7 @@ void main() {
       FieldElement fe17 = FieldElement(i17, i31);
       FieldElement fe29 = FieldElement(i29, i31);
 
-      expect(fe17.pow_(im3), equals(fe29));
+      expect(fe17.pow(im3), equals(fe29));
     });
 
     test('Div: Case 3', () {
@@ -130,7 +140,7 @@ void main() {
       FieldElement fe11 = FieldElement(i11, i31);
       FieldElement fe13 = FieldElement(i13, i31);
 
-      expect(fe4.pow_(im4) * fe11, equals(fe13));
+      expect(fe4.pow(im4) * fe11, equals(fe13));
     });
   });
 }
