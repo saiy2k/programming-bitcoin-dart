@@ -1,20 +1,66 @@
-import 'package:dart_bitcoin/s_256_field.dart';
+import 'dart:typed_data';
+
+import 'package:dart_bitcoin/rfc_6979.dart';
 import 'package:dart_bitcoin/s_256_point.dart';
+import 'package:pointycastle/pointycastle.dart' hide PrivateKey;
 import 'package:test/test.dart';
+
+import 'package:dart_bitcoin/private_key.dart';
 
 void main() {
   group('Ch4: Elliptic curve cryptography (ECC)', () {
     test('SEC DER', () {
       S256Point G = S256Point.G;
 
-      print(G.secAsString(false));
-      print(G.secAsString(true));
+      // print(G.secAsString(false));
+      // print(G.secAsString(true));
+    });
 
-      // z:  96692ddd5c85a0fcd03508697c521b1b00fb17bca080e3733eff7f01f75e281
-      // sig:  4d1d9933d637a8ed6fe761b2702e12b09523269687117d607d60dd818f0b6021
+    test('RFC6979', () {
+      // r: 5d cd f7 f1 83 a5 81 1f d0 db 5a fc 96 d8 43 e5 ea 6d 1b 26 c9 60 61 2c ca 90 7e eb 7d fd 16 94
+      // secret: 42429009809082141725132919433061711592045833497313101863205160517344052450964
+      // randMsg: 40 65 ee 77 81 3c 4b 8e a4 b6 7c 55 a1 93 0c c6 4f ba ce f0 e2 f1 be e0 91 c2 75 cf 84 05 9c 31
+      // z: 29128119700345944827632412315927596533461928550523143039175478156556300033073
+      // rfcHash: 20889311776560637325212081170397242351715008433244209396146804465420672466763
+      // sig: 20889311776560637325212081170397242351715008433244209396146804465420672466763
 
-      // z:  9dfb9e91acca3ab47bd0d5d6730af84ac10cf00b92e779dbf2fd07a30b112f0
-      // sig:  4ea9b7867d6f945261f9f9e82129aab377ece78b8fd32417f6cf08d690dfd39d
+      String prHex = '5dcdf7f183a5811fd0db5afc96d843e5ea6d1b26c960612cca907eeb7dfd1694';
+      BigInt d = BigInt.parse(prHex, radix: 16);
+      print(d);
+
+      String msg = '4065ee77813c4b8ea4b67c55a1930cc64fbacef0e2f1bee091c275cf84059c31';
+      BigInt z = BigInt.parse(msg, radix: 16);
+      print(z);
+
+      Uint8List zInt = writeBigInt(z);
+
+      Mac _mac = Mac('SHA-256/HMAC');
+      var rfc = RFC6979KCalculator(_mac, S256Point.n, d, zInt);
+      print(rfc.nextK());
+    });
+
+    test('Sign', () {
+      // r: 5d cd f7 f1 83 a5 81 1f d0 db 5a fc 96 d8 43 e5 ea 6d 1b 26 c9 60 61 2c ca 90 7e eb 7d fd 16 94
+      // secret: 42429009809082141725132919433061711592045833497313101863205160517344052450964
+      // randMsg: 40 65 ee 77 81 3c 4b 8e a4 b6 7c 55 a1 93 0c c6 4f ba ce f0 e2 f1 be e0 91 c2 75 cf 84 05 9c 31
+      // z: 29128119700345944827632412315927596533461928550523143039175478156556300033073
+      // rfcHash: 20889311776560637325212081170397242351715008433244209396146804465420672466763
+      // sig: 20889311776560637325212081170397242351715008433244209396146804465420672466763
+
+      String prHex = '5dcdf7f183a5811fd0db5afc96d843e5ea6d1b26c960612cca907eeb7dfd1694';
+      BigInt d = BigInt.parse(prHex, radix: 16);
+      print(d);
+
+      String msg = '4065ee77813c4b8ea4b67c55a1930cc64fbacef0e2f1bee091c275cf84059c31';
+      BigInt z = BigInt.parse(msg, radix: 16);
+      print(z);
+
+      Uint8List zInt = writeBigInt(z);
+
+      PrivateKey pk = PrivateKey(d);
+
+      print('Signature:');
+      pk.sign(z);
     });
   });
 }

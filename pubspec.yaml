@@ -8,6 +8,8 @@ environment:
 
 # Add regular dependencies here.
 dependencies:
+  pointycastle: ^3.7.4
+  crypto: ^3.0.3
   # path: ^1.8.0
 
 dev_dependencies:
