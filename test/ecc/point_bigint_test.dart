@@ -2,7 +2,7 @@ import 'package:dart_bitcoin/ecc/field_element.dart';
 import 'package:dart_bitcoin/ecc/point.dart';
 import 'package:test/test.dart';
 
-import 'const_nos.dart';
+import '../const_nos.dart';
 
 void main() {
   BigInt prime = BigInt.from(223);

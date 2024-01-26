@@ -1,7 +1,7 @@
 import 'package:dart_bitcoin/ecc/field_element.dart';
 import 'package:test/test.dart';
 
-import 'const_nos.dart';
+import '../const_nos.dart';
 
 void main() {
   group('FieldElement', () {

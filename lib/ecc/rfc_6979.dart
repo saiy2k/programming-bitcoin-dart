@@ -5,23 +5,20 @@ import 'package:pointycastle/src/utils.dart' as utils;
 
 // Ref:
 //  https://github.com/bcgit/pc-dart/blob/6749f1ebe57f303d7455cc877b5991332e30e396/lib/signers/ecdsa_signer.dart#L283
-//  https://pub.dev/packages/crypto
 class RFC6979KCalculator {
-  final Mac _mac;
-  // late Hmac _mac;
+  final Mac _mac = Mac('SHA-256/HMAC');
   // ignore: non_constant_identifier_names
   late Uint8List _K;
   // ignore: non_constant_identifier_names
   late Uint8List _V;
 
-  // S256Point.N
   final BigInt _n;
 
-  // d is Private key
-  RFC6979KCalculator(this._mac, this._n, BigInt d, Uint8List message) {
+  /// d is Private key
+  RFC6979KCalculator(this._n, BigInt _secretKey, Uint8List message) {
     _K = Uint8List(32);
     _V = Uint8List(32);
-    _init(d, message);
+    _init(_secretKey, message);
   }
 
   void _init(BigInt d, Uint8List message) {
@@ -46,7 +43,6 @@ class RFC6979KCalculator {
     m.setRange((m.length - mVal.length), m.length, mVal);
 
     _mac.init(KeyParameter(_K));
-    // _mac = Hmac(sha256, _K);
 
     _mac.update(_V, 0, _V.length);
     _mac.updateByte(0x00);
@@ -55,7 +51,6 @@ class RFC6979KCalculator {
     _mac.doFinal(_K, 0);
 
     _mac.init(KeyParameter(_K));
-    // _mac = Hmac(sha256, _K);
 
     _mac.update(_V, 0, _V.length);
     _mac.doFinal(_V, 0);
@@ -67,7 +62,6 @@ class RFC6979KCalculator {
     _mac.doFinal(_K, 0);
 
     _mac.init(KeyParameter(_K));
-    // _mac = Hmac(sha256, _K);
 
     _mac.update(_V, 0, _V.length);
     _mac.doFinal(_V, 0);

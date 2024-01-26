@@ -64,6 +64,7 @@ BigInt i68 = BigInt.from(68);
 BigInt i71 = BigInt.from(71);
 BigInt i76 = BigInt.from(76);
 BigInt i77 = BigInt.from(77);
+BigInt i86 = BigInt.from(86);
 
 BigInt i95 = BigInt.from(95);
 BigInt i97 = BigInt.from(97);

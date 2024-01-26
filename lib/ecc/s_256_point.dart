@@ -1,8 +1,10 @@
 import 'dart:typed_data';
 
 import 'package:dart_bitcoin/ecc/field_element.dart';
+import 'package:dart_bitcoin/ecc/operable.dart';
 import 'package:dart_bitcoin/ecc/point.dart';
 import 'package:dart_bitcoin/ecc/s_256_field.dart';
+import 'package:dart_bitcoin/ecc/signature.dart';
 
 class S256Point extends Point<S256Field> {
   static final aa = S256Field(BigInt.zero);
@@ -24,6 +26,16 @@ class S256Point extends Point<S256Field> {
     Point point = super.smult(sc);
 
     return S256Point(point.x != null ? point.x!.num : null, point.y != null ? point.y!.num : null);
+  }
+
+  bool verify(BigInt z, Signature sig) {
+    BigInt sInv = sig.s.modPow(S256Point.n - BigInt.two, S256Point.n);
+    BigInt u = (z * sInv) % S256Point.n;
+    BigInt v = (sig.r * sInv) % S256Point.n;
+
+    Point<IOperable> total = S256Point.G.smult(u) + smult(v);
+
+    return total.x!.num == sig.r;
   }
 
   Uint8List sec(bool compressed) {
