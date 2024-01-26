@@ -1,4 +1,4 @@
-import 'package:dart_bitcoin/field_element.dart';
+import 'package:dart_bitcoin/ecc/field_element.dart';
 
 abstract class IOperable {
   FieldElement operator +(FieldElement other);

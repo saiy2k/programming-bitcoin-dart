@@ -1,4 +1,4 @@
-import 'package:dart_bitcoin/field_element.dart';
+import 'package:dart_bitcoin/ecc/field_element.dart';
 
 BigInt gx = BigInt.parse('79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798', radix: 16);
 BigInt gy = BigInt.parse('483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8', radix: 16);

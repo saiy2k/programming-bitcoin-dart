@@ -1,7 +1,7 @@
-import 'package:dart_bitcoin/field_element.dart';
-import 'package:dart_bitcoin/point.dart';
-import 'package:dart_bitcoin/s_256_field.dart';
-import 'package:dart_bitcoin/s_256_point.dart';
+import 'package:dart_bitcoin/ecc/field_element.dart';
+import 'package:dart_bitcoin/ecc/point.dart';
+import 'package:dart_bitcoin/ecc/s_256_field.dart';
+import 'package:dart_bitcoin/ecc/s_256_point.dart';
 import 'package:test/test.dart';
 
 import 'const_nos.dart';

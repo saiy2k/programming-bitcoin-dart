@@ -1,6 +1,6 @@
 import 'dart:core';
 
-import 'package:dart_bitcoin/operable.dart';
+import 'package:dart_bitcoin/ecc/operable.dart';
 
 /**
  * Try making this work with a Generic Type T, where T can be int or BigInt

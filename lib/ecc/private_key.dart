@@ -1,8 +1,8 @@
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:dart_bitcoin/rfc_6979.dart';
-import 'package:dart_bitcoin/s_256_point.dart';
+import 'package:dart_bitcoin/ecc/rfc_6979.dart';
+import 'package:dart_bitcoin/ecc/s_256_point.dart';
 import 'package:pointycastle/pointycastle.dart';
 
 class PrivateKey {

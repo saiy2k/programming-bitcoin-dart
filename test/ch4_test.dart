@@ -1,11 +1,11 @@
 import 'dart:typed_data';
 
-import 'package:dart_bitcoin/rfc_6979.dart';
-import 'package:dart_bitcoin/s_256_point.dart';
+import 'package:dart_bitcoin/ecc/rfc_6979.dart';
+import 'package:dart_bitcoin/ecc/s_256_point.dart';
 import 'package:pointycastle/pointycastle.dart' hide PrivateKey;
 import 'package:test/test.dart';
 
-import 'package:dart_bitcoin/private_key.dart';
+import 'package:dart_bitcoin/ecc/private_key.dart';
 
 void main() {
   group('Ch4: Elliptic curve cryptography (ECC)', () {

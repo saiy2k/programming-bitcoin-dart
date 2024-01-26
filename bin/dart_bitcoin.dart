@@ -1,5 +1,5 @@
 import 'package:dart_bitcoin/dart_bitcoin.dart' as dart_bitcoin;
-import 'package:dart_bitcoin/field_element.dart';
+import 'package:dart_bitcoin/ecc/field_element.dart';
 
 void main(List<String> arguments) {
   print('Hello world: ${dart_bitcoin.calculate()}!');

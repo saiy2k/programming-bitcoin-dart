@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:dart_bitcoin/field_element.dart';
-import 'package:dart_bitcoin/operable.dart';
+import 'package:dart_bitcoin/ecc/field_element.dart';
+import 'package:dart_bitcoin/ecc/operable.dart';
 
 class Point<T extends IOperable> {
   FieldElement? x, y;
