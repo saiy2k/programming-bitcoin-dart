@@ -133,5 +133,14 @@ void main() {
       expect(prod6.x?.num, isNull);
       expect(prod6.y?.num, isNull);
     });
+
+    test('Ex4: secp256k1: n*G = Infinity ', () {
+      BigInt n = S256Point.n;
+      S256Point G = S256Point.G;
+      Point p = G.smult(n);
+
+      expect(p.x?.num, isNull);
+      expect(p.y?.num, isNull);
+    });
   });
 }

@@ -84,17 +84,6 @@ class Point<T extends IOperable> {
     return result;
   }
 
-  // Lame implemnetation
-  // Point smult(BigInt coeff) {
-  //   Point prod = Point(null, null, this.a, this.b);
-
-  //   for (var i = BigInt.zero; i < coeff; i = i + BigInt.one) {
-  //     prod = prod + this;
-  //   }
-
-  //   return prod;
-  // }
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
