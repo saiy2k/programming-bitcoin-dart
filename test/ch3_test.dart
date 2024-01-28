@@ -1,13 +1,17 @@
+import 'package:crypto/crypto.dart';
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:dart_bitcoin/ecc/field_element.dart';
 import 'package:dart_bitcoin/ecc/point.dart';
+import 'package:dart_bitcoin/ecc/private_key.dart';
 import 'package:dart_bitcoin/ecc/s_256_field.dart';
 import 'package:dart_bitcoin/ecc/s_256_point.dart';
+import 'package:dart_bitcoin/ecc/signature.dart';
+import 'package:pointycastle/pointycastle.dart' hide Signature, Digest, PrivateKey;
 import 'package:test/test.dart';
 
 import 'const_nos.dart';
-
-//      BigInt gx = BigInt.parse('79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798', radix: 16);
-//      BigInt gy = BigInt.parse('483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8', radix: 16);
 
 void main() {
   BigInt prime = BigInt.from(223);
@@ -158,6 +162,46 @@ void main() {
       }
 
       expect(i, equals(7));
+    });
+
+    test('Ex6: Signature validity', () {
+      BigInt x = BigInt.parse('887387e452b8eacc4acfde10d9aaf7f6d9a0f975aabb10d006e4da568744d06c', radix: 16);
+      BigInt y = BigInt.parse('61de6d95231cd89026e286df3b6ae4a894a3378e393e93a0f45b666329a0ae34', radix: 16);
+      S256Point P = S256Point(x, y);
+
+      BigInt z1 = BigInt.parse('ec208baa0fc1c19f708a9ca96fdeff3ac3f230bb4a7ba4aede4942ad003c0f60', radix: 16);
+      BigInt r1 = BigInt.parse('ac8d1c87e51d0d441be8b3dd5b05c8795b48875dffe00b7ffcfac23010d3a395', radix: 16);
+      BigInt s1 = BigInt.parse('68342ceff8935ededd102dd876ffd6ba72d6a427a3edb13d26eb0781cb423c4', radix: 16);
+      Signature sig1 = Signature(r1, s1);
+
+      bool valid1 = P.verify(z1, sig1);
+      expect(valid1, isTrue);
+
+      BigInt z2 = BigInt.parse('7c076ff316692a3d7eb3c3bb0f8b1488cf72e1afcd929e29307032997a838a3d', radix: 16);
+      BigInt r2 = BigInt.parse('eff69ef2b1bd93a66ed5219add4fb51e11a840f404876325a1e8ffe0529a2c', radix: 16);
+      BigInt s2 = BigInt.parse('c7207fee197d27c618aea621406f6bf5ef6fca38681d82b2f06fddbdce6feab6', radix: 16);
+      Signature sig2 = Signature(r2, s2);
+
+      bool valid2 = P.verify(z2, sig2);
+      expect(valid2, isTrue);
+    });
+
+    // TODO: Not right
+    test('Ex7: Sign a message', () {
+      BigInt secret = BigInt.from(12345);
+      Uint8List bytes = utf8.encode('Programming Bitcoin!');
+      Digest digest = sha256.convert(bytes);
+      BigInt z = BigInt.parse(digest.toString(), radix: 16);
+
+      PrivateKey pk = PrivateKey(secret);
+      print(pk.point);
+
+      Signature sig = pk.sign(z);
+
+      print(sig);
+
+      print('Digest as bytes: ${digest.bytes}');
+      print('Digest as bytes: ${digest.toString()}');
     });
   });
 }
