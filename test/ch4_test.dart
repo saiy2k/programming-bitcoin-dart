@@ -51,5 +51,36 @@ void main() {
       //print(uint8ListToHex(sec3));
       expect(uint8ListToHex(sec3), equals(expectedStr3));
     });
+
+    test('Ex3: Find DER', () {
+      BigInt r = BigInt.parse("37206a0610995c58074999cb9767b87af4c4978db68c06e8e6e81d282047a7c6", radix: 16);
+      BigInt s = BigInt.parse("8ca63759c1157ebeaec0d03cecca119fc9a75bf8e6d0fa65c841c8e2738cdaec", radix: 16);
+
+      Signature sig = Signature(r, s);
+      String expectedDerHex =
+          '3045022037206a0610995c58074999cb9767b87af4c4978db68c06e8e6e81d282047a7c60221008ca63759c1157ebeaec0d03cecca119fc9a75bf8e6d0fa65c841c8e2738cdaec';
+      expect(uint8ListToHex(sig.der()), expectedDerHex);
+    });
+
+    test('Ex3.1: Find DER', () {
+      BigInt r = BigInt.parse("37206a0610995c58074999cb9767b87af4c4978db68c06e8e6e81d282047a7c6", radix: 16);
+      BigInt s = BigInt.parse("8ca63759c1157ebeaec0d03cecca119fc9a75bf8e6d0fa65c841c8e2738cdaec", radix: 16);
+
+      Signature sig = Signature(r, s);
+      String expectedDerHex =
+          '3045022037206a0610995c58074999cb9767b87af4c4978db68c06e8e6e81d282047a7c60221008ca63759c1157ebeaec0d03cecca119fc9a75bf8e6d0fa65c841c8e2738cdaec';
+      expect(uint8ListToHex(sig.der()), expectedDerHex);
+    });
+    test('Ex4: Parse DER', () {
+      /*
+      Uint8List der = hexToUint8List(
+          '3045022037206a0610995c58074999cb9767b87af4c4978db68c06e8e6e81d282047a7c60221008ca63759c1157ebeaec0d03cecca119fc9a75bf8e6d0fa65c841c8e2738cdaec');
+      Signature sig = Signature.fromDER(der);
+      expect(
+          sig.r, equals(BigInt.parse("37206a0610995c58074999cb9767b87af4c4978db68c06e8e6e81d282047a7c6", radix: 16)));
+      expect(
+          sig.s, equals(BigInt.parse("8ca63759c1157ebeaec0d03cecca119fc9a75bf8e6d0fa65c841c8e2738cdaec", radix: 16)));
+          */
+    });
   });
 }
