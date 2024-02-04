@@ -98,5 +98,26 @@ void main() {
       String expectedStr3 = 'F1Pn2y6pDb68E5nYJJeba4TLg2U7B6KF1';
       expect(addr3, equals(expectedStr3));
     });
+
+    test('Ex: bigToBuf', () {
+      print(uint8ListToHex(bigToBuf(BigInt.from(1000))));
+    });
+
+    test('Ex6: wif', () {
+      PrivateKey pk1 = PrivateKey(BigInt.from(5003));
+      String addr1 = pk1.wif(true, true);
+      String expectedStr1 = 'cMahea7zqjxrtgAbB7LSGbcQUr1uX1ojuat9jZodMN8rFTv2sfUK';
+      expect(addr1, equals(expectedStr1));
+
+      PrivateKey pk2 = PrivateKey(BigInt.from(2021).pow(5));
+      String addr2 = pk2.wif(false, true);
+      String expectedStr2 = '91avARGdfge8E4tZfYLoxeJ5sGBdNJQH4kvjpWAxgzczjbCwxic';
+      expect(addr2, equals(expectedStr2));
+
+      PrivateKey pk3 = PrivateKey(BigInt.parse('54321deadbeef', radix: 16));
+      String addr3 = pk3.wif(true, false);
+      String expectedStr3 = 'KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgiuQJv1h8Ytr2S53a';
+      expect(addr3, equals(expectedStr3));
+    });
   });
 }
