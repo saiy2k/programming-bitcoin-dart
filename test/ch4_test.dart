@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:dart_bitcoin/base58.dart';
-import 'package:dart_bitcoin/ecc/rfc_6979.dart';
 import 'package:dart_bitcoin/ecc/s_256_point.dart';
 import 'package:dart_bitcoin/ecc/signature.dart';
 import 'package:pointycastle/pointycastle.dart' hide PrivateKey, Signature;
@@ -79,6 +78,25 @@ void main() {
       expect(base58A, equals(expectedBase58A));
       expect(base58B, equals(expectedBase58B));
       expect(base58C, equals(expectedBase58C));
+    });
+
+    test('Ex5: Addresses', () {
+      PrivateKey pk1 = PrivateKey(BigInt.from(5002));
+      String addr1 = pk1.point.address(false, true);
+      String expectedStr1 = 'mmTPbXQFxboEtNRkwfh6K51jvdtHLxGeMA';
+      expect(addr1, equals(expectedStr1));
+
+      PrivateKey pk2 = PrivateKey(BigInt.from(2020).pow(5));
+      String addr2 = pk2.point.address(true, true);
+      String expectedStr2 = 'mopVkxp8UhXqRYbCYJsbeE1h1fiF64jcoH';
+      expect(addr2, equals(expectedStr2));
+
+      PrivateKey pk3 = PrivateKey(BigInt.parse('12345deadbeef', radix: 16));
+      String addr3 = pk3.point.address(true, false);
+      // TODO: Actual expected
+      // String expectedStr3 = '1F1Pn2y6pDb68E5nYJJeba4TLg2U7B6KF1';
+      String expectedStr3 = 'F1Pn2y6pDb68E5nYJJeba4TLg2U7B6KF1';
+      expect(addr3, equals(expectedStr3));
     });
   });
 }

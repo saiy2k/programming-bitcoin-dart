@@ -1,10 +1,13 @@
 import 'dart:typed_data';
 
+import 'package:crypto/crypto.dart';
+import 'package:dart_bitcoin/base58.dart';
 import 'package:dart_bitcoin/ecc/field_element.dart';
 import 'package:dart_bitcoin/ecc/operable.dart';
 import 'package:dart_bitcoin/ecc/point.dart';
 import 'package:dart_bitcoin/ecc/s_256_field.dart';
 import 'package:dart_bitcoin/ecc/signature.dart';
+import 'package:pointycastle/digests/ripemd160.dart';
 
 class S256Point extends Point<S256Field> {
   static final aa = S256Field(BigInt.zero);
@@ -48,6 +51,18 @@ class S256Point extends Point<S256Field> {
 
   String secAsString(bool compressed) {
     return uint8ListToHex(sec(compressed));
+  }
+
+  Uint8List hash160(bool compressed) {
+    Digest digest = sha256.convert(sec(compressed));
+    var ripHash = RIPEMD160Digest().process(Uint8List.fromList(digest.bytes));
+    return ripHash;
+  }
+
+  String address(bool compressed, bool testnet) {
+    Uint8List prefix = Uint8List.fromList(testnet ? [0x6f] : [0x00]);
+    Uint8List preHash = Uint8List.fromList(prefix + hash160(compressed));
+    return encodeBase58Checksum(preHash);
   }
 }
 
