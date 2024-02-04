@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:dart_bitcoin/base58.dart';
 import 'package:dart_bitcoin/ecc/rfc_6979.dart';
 import 'package:dart_bitcoin/ecc/s_256_point.dart';
 import 'package:dart_bitcoin/ecc/signature.dart';
@@ -62,25 +63,22 @@ void main() {
       expect(uint8ListToHex(sig.der()), expectedDerHex);
     });
 
-    test('Ex3.1: Find DER', () {
-      BigInt r = BigInt.parse("37206a0610995c58074999cb9767b87af4c4978db68c06e8e6e81d282047a7c6", radix: 16);
-      BigInt s = BigInt.parse("8ca63759c1157ebeaec0d03cecca119fc9a75bf8e6d0fa65c841c8e2738cdaec", radix: 16);
+    test('Ex4: Base58', () {
+      BigInt a = BigInt.parse('7c076ff316692a3d7eb3c3bb0f8b1488cf72e1afcd929e29307032997a838a3d', radix: 16);
+      BigInt b = BigInt.parse('eff69ef2b1bd93a66ed5219add4fb51e11a840f404876325a1e8ffe0529a2c', radix: 16);
+      BigInt c = BigInt.parse('c7207fee197d27c618aea621406f6bf5ef6fca38681d82b2f06fddbdce6feab6', radix: 16);
 
-      Signature sig = Signature(r, s);
-      String expectedDerHex =
-          '3045022037206a0610995c58074999cb9767b87af4c4978db68c06e8e6e81d282047a7c60221008ca63759c1157ebeaec0d03cecca119fc9a75bf8e6d0fa65c841c8e2738cdaec';
-      expect(uint8ListToHex(sig.der()), expectedDerHex);
-    });
-    test('Ex4: Parse DER', () {
-      /*
-      Uint8List der = hexToUint8List(
-          '3045022037206a0610995c58074999cb9767b87af4c4978db68c06e8e6e81d282047a7c60221008ca63759c1157ebeaec0d03cecca119fc9a75bf8e6d0fa65c841c8e2738cdaec');
-      Signature sig = Signature.fromDER(der);
-      expect(
-          sig.r, equals(BigInt.parse("37206a0610995c58074999cb9767b87af4c4978db68c06e8e6e81d282047a7c6", radix: 16)));
-      expect(
-          sig.s, equals(BigInt.parse("8ca63759c1157ebeaec0d03cecca119fc9a75bf8e6d0fa65c841c8e2738cdaec", radix: 16)));
-          */
+      String base58A = encodeBase58(writeBigInt(a));
+      String base58B = encodeBase58(writeBigInt(b));
+      String base58C = encodeBase58(writeBigInt(c));
+
+      String expectedBase58A = '9MA8fRQrT4u8Zj8ZRd6MAiiyaxb2Y1CMpvVkHQu5hVM6';
+      String expectedBase58B = '4fE3H2E6XMp4SsxtwinF7w9a34ooUrwWe4WsW1458Pd';
+      String expectedBase58C = 'EQJsjkd6JaGwxrjEhfeqPenqHwrBmPQZjJGNSCHBkcF7';
+
+      expect(base58A, equals(expectedBase58A));
+      expect(base58B, equals(expectedBase58B));
+      expect(base58C, equals(expectedBase58C));
     });
   });
 }
