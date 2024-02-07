@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:dart_bitcoin/ecc/rfc_6979.dart';
 import 'package:dart_bitcoin/ecc/s_256_point.dart';
 import 'package:dart_bitcoin/ecc/signature.dart';
+import 'package:dart_bitcoin/helpers/bigint_util.dart';
 import 'package:pointycastle/pointycastle.dart' hide PrivateKey, Signature;
 import 'package:test/test.dart';
 

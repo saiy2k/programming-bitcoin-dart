@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:dart_bitcoin/ecc/s_256_point.dart';
+import 'package:dart_bitcoin/helpers/bigint_util.dart';
 
 class Signature {
   BigInt r;

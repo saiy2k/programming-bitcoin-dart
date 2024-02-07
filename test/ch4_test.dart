@@ -1,8 +1,11 @@
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:dart_bitcoin/base58.dart';
 import 'package:dart_bitcoin/ecc/s_256_point.dart';
 import 'package:dart_bitcoin/ecc/signature.dart';
+import 'package:dart_bitcoin/helpers/bigint_util.dart';
+import 'package:dart_bitcoin/helpers/hex.dart';
 import 'package:pointycastle/pointycastle.dart' hide PrivateKey, Signature;
 import 'package:test/test.dart';
 
@@ -118,6 +121,19 @@ void main() {
       String addr3 = pk3.wif(true, false);
       String expectedStr3 = 'KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgiuQJv1h8Ytr2S53a';
       expect(addr3, equals(expectedStr3));
+    });
+
+    test('Ex9: Testnet address', () {
+      String randomString = '';
+      String charSpace = '0123456789abcdef';
+      for (int i = 0; i < 64; i++) {
+        int rnd = Random().nextInt(16);
+        String char = charSpace[rnd];
+        randomString += char;
+      }
+      PrivateKey pk = PrivateKey(BigInt.parse(randomString, radix: 16));
+      print(pk.wif(true, true));
+      print(pk.point.address(true, true));
     });
   });
 }

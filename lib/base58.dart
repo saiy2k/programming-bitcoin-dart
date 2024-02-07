@@ -2,6 +2,8 @@ import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
 import 'package:dart_bitcoin/ecc/s_256_point.dart';
+import 'package:dart_bitcoin/helpers/bigint_util.dart';
+import 'package:dart_bitcoin/helpers/crypto.dart';
 
 String encodeBase58(Uint8List ip) {
   String BASE58 = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
@@ -25,8 +27,4 @@ String encodeBase58(Uint8List ip) {
 String encodeBase58Checksum(Uint8List ip) {
   Uint8List suffix = hash256(ip).sublist(0, 4);
   return encodeBase58(Uint8List.fromList(ip + suffix));
-}
-
-Uint8List hash256(Uint8List ip) {
-  return Uint8List.fromList(sha256.convert(sha256.convert(ip).bytes).bytes);
 }

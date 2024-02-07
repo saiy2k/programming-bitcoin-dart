@@ -4,6 +4,7 @@ import 'package:dart_bitcoin/base58.dart';
 import 'package:dart_bitcoin/ecc/rfc_6979.dart';
 import 'package:dart_bitcoin/ecc/s_256_point.dart';
 import 'package:dart_bitcoin/ecc/signature.dart';
+import 'package:dart_bitcoin/helpers/bigint_util.dart';
 
 class PrivateKey {
   late S256Point point;
@@ -37,7 +38,6 @@ class PrivateKey {
     Uint8List prefix = Uint8List.fromList(testnet ? [0xef] : [0x80]);
     Uint8List optionalSuffix = Uint8List.fromList(compressed ? [0x01] : []);
     Uint8List combined = Uint8List.fromList(prefix + bigToBuf(secret, 32) + optionalSuffix);
-    // Uint8List checksum = hash256(combined).sublist(0, 4);
     return encodeBase58Checksum(combined);
   }
 }
