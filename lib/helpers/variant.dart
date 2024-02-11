@@ -1,9 +1,7 @@
 import 'dart:typed_data';
 
-(BigInt, int) decodeVariant(Uint8List byteStream, int bI) {
+(BigInt, int) decodeVarint(Uint8List byteStream, int bI) {
   int firstByte = byteStream[bI];
-
-  print('firstByte: $firstByte');
 
   if (firstByte == 0xfd) {
     return (BigInt.from(byteStream[bI + 1] + (byteStream[bI + 2] << 8)), bI + 3);

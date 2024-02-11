@@ -41,6 +41,8 @@ class Tx {
     print(txBytes);
     int baseIndex = 0;
     int _version;
+    List<TxIn> _txIns;
+    List<TxOut> _txOuts;
 
     (_version, baseIndex) = parseVersion(txBytes, baseIndex);
     version = _version;
@@ -48,17 +50,31 @@ class Tx {
     print(version);
     print(baseIndex);
 
-    BigInt inputCount;
-    (inputCount, baseIndex) = decodeVariant(txBytes, baseIndex);
-    print('Inputcount');
-    print(inputCount);
-    print(baseIndex);
+    (_txIns, baseIndex) = parseInputTxs(txBytes, baseIndex);
+    txIns = _txIns;
+    print('TxInputs');
+    print(txIns);
   }
 
   (int, int) parseVersion(Uint8List txBytes, int baseIndex) {
     int version = txBytes[0] + (txBytes[1] << 8) + (txBytes[2] << 16) + (txBytes[3] << 24);
     baseIndex = 4;
     return (version, baseIndex);
+  }
+
+  (List<TxIn>, int) parseInputTxs(Uint8List txBytes, int baseIndex) {
+    BigInt inputCount;
+    List<TxIn> txIns = [];
+    (inputCount, baseIndex) = decodeVarint(txBytes, baseIndex);
+    print('Inputcount');
+    print(inputCount);
+    print(baseIndex);
+
+    for (BigInt i = BigInt.zero; i < inputCount; i = i + BigInt.one) {
+      TxIn txIn = TxIn.fromBytes(txBytes, baseIndex);
+      txIns.add(txIn);
+    }
+    return (txIns, baseIndex);
   }
   /* Stream version 
   /// 4 bytes: Version
