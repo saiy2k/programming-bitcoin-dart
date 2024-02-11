@@ -1,5 +1,9 @@
 import 'dart:typed_data';
 
+Uint8List encodeVarint(BigInt no) {
+  return Uint8List(0);
+}
+
 (BigInt, int) decodeVarint(Uint8List byteStream, int bI) {
   int firstByte = byteStream[bI];
 

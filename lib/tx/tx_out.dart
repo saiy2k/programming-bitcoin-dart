@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:dart_bitcoin/helpers/variant.dart';
+import 'package:dart_bitcoin/helpers/varint.dart';
 
 class TxOut {
   late BigInt amount;

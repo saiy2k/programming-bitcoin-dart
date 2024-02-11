@@ -4,7 +4,7 @@ import 'dart:typed_data';
 
 import 'package:dart_bitcoin/ecc/s_256_point.dart';
 import 'package:dart_bitcoin/helpers/hex.dart';
-import 'package:dart_bitcoin/helpers/variant.dart';
+import 'package:dart_bitcoin/helpers/varint.dart';
 import 'package:dart_bitcoin/tx/tx_in.dart';
 import 'package:dart_bitcoin/tx/tx_out.dart';
 
@@ -38,7 +38,6 @@ class Tx {
   /// 4 bytes: Version
   /// Variant: # of inputs
   parse(Uint8List txBytes) {
-    print(txBytes);
     int baseIndex = 0;
     int _version;
     int _lockTime;
@@ -47,25 +46,15 @@ class Tx {
 
     (_version, baseIndex) = parseVersion(txBytes, baseIndex);
     version = _version;
-    print('Version');
-    print(version);
-    print(baseIndex);
 
     (_txIns, baseIndex) = parseInputTxs(txBytes, baseIndex);
     txIns = _txIns;
-    print('TxInputs');
-    print(txIns);
 
     (_txOuts, baseIndex) = parseOutputTxs(txBytes, baseIndex);
     txOuts = _txOuts;
-    print('TxOutputs');
-    print(txOuts);
 
     (_lockTime, baseIndex) = parseLocktime(txBytes, baseIndex);
     locktime = _lockTime;
-    print('Locktime');
-    print(locktime);
-    print(baseIndex);
   }
 
   (int, int) parseVersion(Uint8List txBytes, int baseIndex) {
@@ -78,9 +67,6 @@ class Tx {
     BigInt inputCount;
     List<TxIn> txIns = [];
     (inputCount, baseIndex) = decodeVarint(txBytes, baseIndex);
-    print('Inputcount');
-    print(inputCount);
-    print(baseIndex);
 
     for (BigInt i = BigInt.zero; i < inputCount; i = i + BigInt.one) {
       TxIn txIn;
@@ -94,9 +80,6 @@ class Tx {
     BigInt outputCount;
     List<TxOut> txIns = [];
     (outputCount, baseIndex) = decodeVarint(txBytes, baseIndex);
-    print('Outputcount');
-    print(outputCount);
-    print(baseIndex);
 
     for (BigInt i = BigInt.zero; i < outputCount; i = i + BigInt.one) {
       TxOut txOut;

@@ -14,8 +14,6 @@ void main() {
 
       Tx tx = Tx(1, [], [], 0, false);
       tx.parse(rawTxBytes);
-
-      // await Future.delayed(Duration(seconds: 1));
     });
 
     test('Ex5: Parse Tx 2', () async {
@@ -26,7 +24,7 @@ void main() {
       Tx tx = Tx(1, [], [], 0, false);
       tx.parse(rawTxBytes);
 
-      // await Future.delayed(Duration(seconds: 1));
+      print(tx.toString());
     });
 
     test('dummy', () {

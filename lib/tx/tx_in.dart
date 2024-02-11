@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:dart_bitcoin/helpers/hex.dart';
-import 'package:dart_bitcoin/helpers/variant.dart';
+import 'package:dart_bitcoin/helpers/varint.dart';
 
 class TxIn {
   late String prev_tx;
