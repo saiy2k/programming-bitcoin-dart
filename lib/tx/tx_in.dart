@@ -23,7 +23,7 @@ class TxIn {
     BigInt scriptSigLength;
     (scriptSigLength, bI) = decodeVarint(txBytes, bI);
     script_sig =
-        txBytes.getRange(bI, bI + scriptSigLength.toInt()).map((e) => e.toRadixString(16).padLeft(2, '0')).join('e');
+        txBytes.getRange(bI, bI + scriptSigLength.toInt()).map((e) => e.toRadixString(16).padLeft(2, '0')).join('');
     bI = bI + scriptSigLength.toInt();
 
     sequence = txBytes[bI] + (txBytes[bI + 1] << 8) + (txBytes[bI + 2] << 16) + (txBytes[bI + 3] << 24);
@@ -32,7 +32,7 @@ class TxIn {
     parseIndex = bI;
   }
 
-  (TxIn, int) parseFromBytes(Uint8List txBytes, int bI) {
+  static (TxIn, int) parseFromBytes(Uint8List txBytes, int bI) {
     parseIndex = bI;
     TxIn tx = TxIn.fromBytes(txBytes, bI);
     return (tx, parseIndex);

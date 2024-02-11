@@ -41,6 +41,7 @@ class Tx {
     print(txBytes);
     int baseIndex = 0;
     int _version;
+    int _lockTime;
     List<TxIn> _txIns;
     List<TxOut> _txOuts;
 
@@ -54,6 +55,17 @@ class Tx {
     txIns = _txIns;
     print('TxInputs');
     print(txIns);
+
+    (_txOuts, baseIndex) = parseOutputTxs(txBytes, baseIndex);
+    txOuts = _txOuts;
+    print('TxOutputs');
+    print(txOuts);
+
+    (_lockTime, baseIndex) = parseLocktime(txBytes, baseIndex);
+    locktime = _lockTime;
+    print('Locktime');
+    print(locktime);
+    print(baseIndex);
   }
 
   (int, int) parseVersion(Uint8List txBytes, int baseIndex) {
@@ -71,11 +83,34 @@ class Tx {
     print(baseIndex);
 
     for (BigInt i = BigInt.zero; i < inputCount; i = i + BigInt.one) {
-      TxIn txIn = TxIn.fromBytes(txBytes, baseIndex);
+      TxIn txIn;
+      (txIn, baseIndex) = TxIn.parseFromBytes(txBytes, baseIndex);
       txIns.add(txIn);
     }
     return (txIns, baseIndex);
   }
+
+  (List<TxOut>, int) parseOutputTxs(Uint8List txBytes, int baseIndex) {
+    BigInt outputCount;
+    List<TxOut> txIns = [];
+    (outputCount, baseIndex) = decodeVarint(txBytes, baseIndex);
+    print('Outputcount');
+    print(outputCount);
+    print(baseIndex);
+
+    for (BigInt i = BigInt.zero; i < outputCount; i = i + BigInt.one) {
+      TxOut txOut;
+      (txOut, baseIndex) = TxOut.parseFromBytes(txBytes, baseIndex);
+      txIns.add(txOut);
+    }
+    return (txIns, baseIndex);
+  }
+
+  (int, int) parseLocktime(Uint8List txBytes, int bI) {
+    int version = txBytes[bI] + (txBytes[bI + 1] << 8) + (txBytes[bI + 2] << 16) + (txBytes[bI + 3] << 24);
+    return (version, bI + 4);
+  }
+
   /* Stream version 
   /// 4 bytes: Version
   /// Variant: # of inputs
