@@ -1,8 +1,14 @@
 import 'dart:typed_data';
 
 import 'package:dart_bitcoin/helpers/hex.dart';
+import 'package:dart_bitcoin/helpers/uint8list.dart';
 import 'package:dart_bitcoin/helpers/varint.dart';
 
+// 32 bytes: prev_tx
+// 4 bytes: prev_index
+// 1-9 bytes: script_sig length
+// ? bytes: script_sig
+// 4 bytes: sequence
 class TxIn {
   late String prev_tx;
   late int prev_index;
@@ -30,6 +36,14 @@ class TxIn {
     bI = bI + 4;
 
     parseIndex = bI;
+  }
+
+  String serialize() {
+    String prevIndexString = uint8ListToHex(int4ToUint8List(prev_index));
+    String scriptSigLength = uint8ListToHex(encodeVarint(BigInt.from(script_sig.length ~/ 2)));
+    String sequenceString = uint8ListToHex(int4ToUint8List(sequence));
+
+    return prev_tx + prevIndexString + scriptSigLength + script_sig + sequenceString;
   }
 
   static (TxIn, int) parseFromBytes(Uint8List txBytes, int bI) {

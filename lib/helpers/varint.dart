@@ -1,7 +1,19 @@
 import 'dart:typed_data';
 
+import 'package:dart_bitcoin/helpers/bigint_util.dart';
+
 Uint8List encodeVarint(BigInt no) {
-  return Uint8List(0);
+  if (no < BigInt.parse('fd', radix: 16)) {
+    return writeBigInt(no);
+  } else if (no < BigInt.parse('10000', radix: 16)) {
+    return Uint8List.fromList(Uint8List.fromList([0xfd]) + writeBigInt(no));
+  } else if (no < BigInt.parse('100000000', radix: 16)) {
+    return Uint8List.fromList(Uint8List.fromList([0xfe]) + writeBigInt(no));
+  } else if (no < BigInt.parse('10000000000000000', radix: 16)) {
+    return Uint8List.fromList(Uint8List.fromList([0xff]) + writeBigInt(no));
+  } else {
+    throw Exception('Too big a number');
+  }
 }
 
 (BigInt, int) decodeVarint(Uint8List byteStream, int bI) {

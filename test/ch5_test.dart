@@ -25,6 +25,9 @@ void main() {
       tx.parse(rawTxBytes);
 
       print(tx.toString());
+
+      print('Serialized Tx:');
+      print(tx.serialize());
     });
 
     test('dummy', () {

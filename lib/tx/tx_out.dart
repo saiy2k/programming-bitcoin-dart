@@ -1,7 +1,13 @@
 import 'dart:typed_data';
 
+import 'package:dart_bitcoin/helpers/bigint_util.dart';
+import 'package:dart_bitcoin/helpers/hex.dart';
+import 'package:dart_bitcoin/helpers/uint8list.dart';
 import 'package:dart_bitcoin/helpers/varint.dart';
 
+/// 8 bytes: amount
+/// 1-9 bytes: script_pubkey length
+/// ? bytes: script_pubkey
 class TxOut {
   late BigInt amount;
   late String script_pubkey;
@@ -28,6 +34,15 @@ class TxOut {
     bI = bI + scriptPubKeyLength.toInt();
 
     parseIndex = bI;
+  }
+
+  String serialize() {
+    Uint8List amountBytes = writeBigInt(amount);
+    print(amountBytes);
+    String amountString = uint8ListToHex(Uint8List.fromList(writeBigInt(amount).reversed.toList())).padRight(16, '0');
+    String pubKeyLength = uint8ListToHex(encodeVarint(BigInt.from(script_pubkey.length ~/ 2)));
+
+    return amountString + pubKeyLength + script_pubkey;
   }
 
   static (TxOut, int) parseFromBytes(Uint8List txBytes, int bI) {

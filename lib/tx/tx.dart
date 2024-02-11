@@ -3,7 +3,9 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:dart_bitcoin/ecc/s_256_point.dart';
+import 'package:dart_bitcoin/helpers/bigint_util.dart';
 import 'package:dart_bitcoin/helpers/hex.dart';
+import 'package:dart_bitcoin/helpers/uint8list.dart';
 import 'package:dart_bitcoin/helpers/varint.dart';
 import 'package:dart_bitcoin/tx/tx_in.dart';
 import 'package:dart_bitcoin/tx/tx_out.dart';
@@ -35,8 +37,42 @@ class Tx {
     return Uint8List.fromList([0, 1, 2, 3, 4, 5]);
   }
 
+  String serialize() {
+    String versionString = serializeVersion();
+    String txInString = serializeTxIns();
+    String txOutString = serializeTxOuts();
+    String lockTimeString = uint8ListToHex(int4ToUint8List(locktime));
+
+    return versionString + txInString + txOutString + lockTimeString;
+  }
+
+  String serializeVersion() {
+    String versionString = uint8ListToHex(int4ToUint8List(version));
+    return versionString;
+  }
+
+  String serializeTxIns() {
+    String txInCountString = uint8ListToHex(encodeVarint(BigInt.from(txIns.length)));
+    String txInString = "";
+    for (TxIn txIn in txIns) {
+      txInString = txInString + txIn.serialize();
+    }
+    return txInCountString + txInString;
+  }
+
+  String serializeTxOuts() {
+    String txOutCountString = uint8ListToHex(encodeVarint(BigInt.from(txOuts.length)));
+    String txOutString = "";
+    for (TxOut txOut in txOuts) {
+      txOutString = txOutString + txOut.serialize();
+    }
+    return txOutCountString + txOutString;
+  }
+
   /// 4 bytes: Version
-  /// Variant: # of inputs
+  /// Inputs
+  /// Outputs
+  /// 4 bytes: Locktime
   parse(Uint8List txBytes) {
     int baseIndex = 0;
     int _version;
@@ -63,6 +99,8 @@ class Tx {
     return (version, baseIndex);
   }
 
+  /// Varint: Input count
+  /// Inputs
   (List<TxIn>, int) parseInputTxs(Uint8List txBytes, int baseIndex) {
     BigInt inputCount;
     List<TxIn> txIns = [];
@@ -76,6 +114,8 @@ class Tx {
     return (txIns, baseIndex);
   }
 
+  /// Varint: Output count
+  /// Outputs
   (List<TxOut>, int) parseOutputTxs(Uint8List txBytes, int baseIndex) {
     BigInt outputCount;
     List<TxOut> txIns = [];
