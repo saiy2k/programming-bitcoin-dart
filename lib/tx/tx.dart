@@ -41,13 +41,13 @@ class Tx {
     String versionString = serializeVersion();
     String txInString = serializeTxIns();
     String txOutString = serializeTxOuts();
-    String lockTimeString = uint8ListToHex(int4ToUint8List(locktime));
+    String lockTimeString = uint8ListToHex(intToUint8ListLittle(locktime));
 
     return versionString + txInString + txOutString + lockTimeString;
   }
 
   String serializeVersion() {
-    String versionString = uint8ListToHex(int4ToUint8List(version));
+    String versionString = uint8ListToHex(intToUint8ListLittle(version));
     return versionString;
   }
 

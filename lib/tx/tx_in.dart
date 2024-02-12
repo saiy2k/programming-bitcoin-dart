@@ -39,9 +39,9 @@ class TxIn {
   }
 
   String serialize() {
-    String prevIndexString = uint8ListToHex(int4ToUint8List(prev_index));
+    String prevIndexString = uint8ListToHex(intToUint8ListLittle(prev_index));
     String scriptSigLength = uint8ListToHex(encodeVarint(BigInt.from(script_sig.length ~/ 2)));
-    String sequenceString = uint8ListToHex(int4ToUint8List(sequence));
+    String sequenceString = uint8ListToHex(intToUint8ListLittle(sequence));
 
     return prev_tx + prevIndexString + scriptSigLength + script_sig + sequenceString;
   }
