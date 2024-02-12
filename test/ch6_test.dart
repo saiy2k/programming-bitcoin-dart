@@ -1,6 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:dart_bitcoin/script.dart';
+import 'package:dart_bitcoin/script/opcode.dart';
+import 'package:dart_bitcoin/script/operations.dart';
 import 'package:test/test.dart';
 
 void main() {
