@@ -30,16 +30,17 @@ void main() {
       // expect(stack, equals(List.from([20, 30, ])));
     });
 
-    // OP_DUP OP_HASH160 ab0c0b2e98b1ab6dbf67d4750b0a56244948a879 OP_EQUALVERIFY OP_CHECKSIG
-    // 76 a9 14 ab0c0b2e98b1ab6dbf67d4750b0a56244948a879 88 ac
-
     test('script parse', () {
+      // 19 76 a9 14 ab0c0b2e98b1ab6dbf67d4750b0a56244948a879 88 ac
       String scriptString = '1976a914ab0c0b2e98b1ab6dbf67d4750b0a56244948a87988ac';
       Uint8List scriptBytes = hexStringToBytes(scriptString);
       int baseIndex = 0;
       Script script;
       (script, baseIndex) = Script.parseFromBytes(scriptBytes, baseIndex);
       print(script);
+      expect(script.toString(),
+          equals('OP_DUP OP_HASH160 ab0c0b2e98b1ab6dbf67d4750b0a56244948a879 OP_EQUALVERIFY OP_CHECKSIG '));
+      expect(script.serialize(), scriptString);
     });
   });
 }

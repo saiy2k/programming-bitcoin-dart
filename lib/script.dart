@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:dart_bitcoin/helpers/hex.dart';
 import 'package:dart_bitcoin/helpers/varint.dart';
 import 'package:dart_bitcoin/script/opcode.dart';
 
@@ -13,14 +14,20 @@ class OperationCmd extends ScriptCmd {
     return operation.toStr(type);
   }
 
+  @override
   String toString() {
-    return operation.toStr('');
+    return toStr('');
   }
 }
 
 class ElementCmd extends ScriptCmd {
   final Uint8List element;
   ElementCmd(this.element);
+
+  @override
+  String toString() {
+    return uint8ListToHex(element);
+  }
 }
 
 class Script {
@@ -29,6 +36,24 @@ class Script {
   static int parseIndex = 0;
 
   Script(this.cmds);
+
+  String serialize() {
+    String result = '';
+    for (var cmd in cmds) {
+      if (cmd is OperationCmd) {
+        result += cmd.operation.toStr('hex');
+      } else if (cmd is ElementCmd) {
+        result += cmd.element.length.toRadixString(16);
+        result += uint8ListToHex(cmd.element);
+        // TODO: OP_PUSHDATA1
+        // TODO: OP_PUSHDATA2
+        // TODO: OP_PUSHDATA4
+      }
+    }
+
+    String scriptLen = uint8ListToHex(encodeVarint(BigInt.from(result.length ~/ 2)));
+    return scriptLen + result;
+  }
 
   Script.fromBytes(Uint8List txBytes, int bI) {
     BigInt scriptLength;
@@ -49,6 +74,9 @@ class Script {
         cmds.add(ElementCmd(Uint8List.fromList(txBytes.getRange(bI, bI + n).toList())));
         count += n;
         bI = bI + n;
+        // TODO: OP_PUSHDATA1
+        // TODO: OP_PUSHDATA2
+        // TODO: OP_PUSHDATA4
       } else {
         cmds.add(OperationCmd(OpCode(current)));
       }
@@ -63,13 +91,14 @@ class Script {
     return (script, parseIndex);
   }
 
+  @override
   String toString() {
     String result = '';
     for (var cmd in cmds) {
       if (cmd is OperationCmd) {
-        result += '${cmd.operation.toString()} ';
+        result += '$cmd ';
       } else if (cmd is ElementCmd) {
-        result += '${cmd.element} ';
+        result += '$cmd ';
       }
     }
     return result;
