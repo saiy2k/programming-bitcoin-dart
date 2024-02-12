@@ -23,6 +23,12 @@ Map<OpCode, Function> operations = {
   OpCode.OP_15: op15,
   OpCode.OP_16: op16,
   OpCode.OP_DUP: opDup,
+  OpCode.OP_EQUAL_VERIFY: op_placeholder,
   OpCode.OP_HASH256: opHash256,
+  OpCode.OP_CHECKSIG: op_placeholder,
   OpCode.OP_HASH160: opHash160,
 };
+
+void op_placeholder() {
+  print('placeholder');
+}

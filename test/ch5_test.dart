@@ -14,6 +14,7 @@ void main() {
 
       Tx tx = Tx(1, [], [], 0, false);
       tx.parse(rawTxBytes);
+      print(tx);
     });
 
     test('Ex5: Parse Tx 2', () async {
